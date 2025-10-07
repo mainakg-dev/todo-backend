@@ -16,8 +16,9 @@ export class UsersService {
 
   async create(email: string, password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    return this.prisma.user.create({
+    const { password: _, ...rest } = await this.prisma.user.create({
       data: { email, password: hashedPassword },
     });
+    return rest;
   }
 }

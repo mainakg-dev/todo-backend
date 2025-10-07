@@ -11,7 +11,9 @@ import {
 } from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('todos')
 @Controller('todos')
 @UseGuards(AuthGuard('jwt'))
 export class TodosController {
@@ -23,6 +25,8 @@ export class TodosController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all todos based on users' })
+  @ApiResponse({ status: 200, description: 'List of todos' })
   findAll(@Request() req) {
     return this.todosService.findAll(req.user.userId);
   }
