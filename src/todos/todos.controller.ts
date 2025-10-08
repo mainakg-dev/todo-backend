@@ -12,6 +12,7 @@ import {
 import { TodosService } from './todos.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateTodoDto } from './dto/todo-create';
 
 @ApiTags('todos')
 @Controller('todos')
@@ -20,7 +21,7 @@ export class TodosController {
   constructor(private todosService: TodosService) {}
 
   @Post()
-  create(@Request() req, @Body() body: { title: string }) {
+  create(@Request() req, @Body() body: CreateTodoDto) {
     return this.todosService.create(req.user.userId, body.title);
   }
 

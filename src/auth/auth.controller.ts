@@ -5,10 +5,14 @@ import {
   UseGuards,
   Body,
   UnauthorizedException,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UserEntity } from 'src/users/entities/user.entity';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -24,6 +28,7 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() body: CreateUserDto) {
-    return this.authService.register(body.email, body.password);
+    const user = await this.authService.register(body.email, body.password);
+    return new UserEntity(user);
   }
 }
